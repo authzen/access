@@ -2,13 +2,12 @@ syntax = "proto3";
 
 package authzen.access.v1;
 
-option go_package = "github.com/authzen/access/v1;access";
-
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option go_package = "github.com/authzen/access/v1;access";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "OpenID AuthZen Access Service"
@@ -36,27 +35,19 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
   responses: {
     key: "400"
-    value: {
-        description: "Bad Request"
-    }
-  }, 
+    value: {description: "Bad Request"}
+  }
   responses: {
     key: "401"
-    value: {
-        description: "Unauthorized"
-    }
-  }, 
+    value: {description: "Unauthorized"}
+  }
   responses: {
     key: "403"
-    value: {
-        description: "Forbidden"
-    }
-  }, 
+    value: {description: "Forbidden"}
+  }
   responses: {
     key: "500"
-    value: {
-        description: "Internal error"
-    }
+    value: {description: "Internal error"}
   }
 };
 
@@ -74,7 +65,7 @@ service Access {
       operation_id: "openid.authzen.access.v1.evaluation.post"
       deprecated: false
     };
-  };
+  }
 
   // evaluations
   rpc Evaluations(EvaluationsRequest) returns (EvaluationsResponse) {
@@ -89,47 +80,47 @@ service Access {
       operation_id: "openid.authzen.access.v1.evaluations.post"
       deprecated: false
     };
-  };
+  }
 }
 
 message EvaluationRequest {
-  Subject subject                                 = 1 [(google.api.field_behavior) = REQUIRED];
-  Action action                                   = 2 [(google.api.field_behavior) = REQUIRED];
-  Resource resource                               = 3 [(google.api.field_behavior) = REQUIRED];
-  google.protobuf.Struct context                  = 4;
+  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
+  Action action = 2 [(google.api.field_behavior) = REQUIRED];
+  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct context = 4;
 }
 
 message EvaluationResponse {
-  bool decision                                   = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  google.protobuf.Struct context                  = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  bool decision = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Struct context = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 message EvaluationsRequest {
-  Subject subject                                 = 1;
-  Action action                                   = 2;
-  Resource resource                               = 3;
-  google.protobuf.Struct context                  = 4;
-  repeated EvaluationRequest evaluations          = 5;
-  google.protobuf.Struct options                  = 6;
+  Subject subject = 1;
+  Action action = 2;
+  Resource resource = 3;
+  google.protobuf.Struct context = 4;
+  repeated EvaluationRequest evaluations = 5;
+  google.protobuf.Struct options = 6;
 }
 
 message EvaluationsResponse {
-  repeated EvaluationResponse decisions           = 1;
+  repeated EvaluationResponse decisions = 1;
 }
 
 message Subject {
-  string type                                     = 1 [(google.api.field_behavior) = REQUIRED];
-  string id                                       = 2 [(google.api.field_behavior) = REQUIRED];
-  google.protobuf.Struct properties               = 3;
+  string type = 1 [(google.api.field_behavior) = REQUIRED];
+  string id = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct properties = 3;
 }
 
 message Action {
-  string name                                     = 1 [(google.api.field_behavior) = REQUIRED];
-  google.protobuf.Struct properties               = 2;
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct properties = 2;
 }
 
 message Resource {
-  string type                                     = 1 [(google.api.field_behavior) = REQUIRED];
-  string id                                       = 2 [(google.api.field_behavior) = REQUIRED];
-  google.protobuf.Struct properties               = 3;
+  string type = 1 [(google.api.field_behavior) = REQUIRED];
+  string id = 2 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct properties = 3;
 }
