@@ -1,0 +1,45 @@
+name: Buf CI
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+  delete:
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
+
+jobs:
+  buf:
+    runs-on: ubuntu-24.04
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Install buf
+        uses: bufbuild/buf-action@v1
+        with:
+          token: ${{ env.BUF_TOKEN }}
+          setup_only: true
+      - 
+        name: Login to buf
+        run: |
+          echo -e "${BUF_TOKEN}" > buf registry login --token-stdin
+      - 
+        name: Run buf workflow
+        uses: bufbuild/buf-action@v1
+        with:
+          token: ${{ env.BUF_TOKEN }}
+          github_token: ${{ github.token }}
