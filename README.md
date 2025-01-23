@@ -4,6 +4,6 @@
 
 ## Access Service
 
-This repo contains protobuf definitions for the OpenID AuthZEN Access Service. The current implementation reflects the Authorization API 1.0 – draft 02 specification.
+This repo contains protobuf definitions for the OpenID AuthZEN Access Service. The current implementation reflects the [Authorization API 1.0 – draft 02](https://openid.github.io/authzen/) specification.
 
-All builds are published to the buf.build/auzthzen/access registry, where one can browse the definitions or generate language bindings to create server and/or client implementations.
+All builds are published to the [buf.build/auzthzen/access](https://buf.build/authzen/access) registry, where one can [browse](https://buf.build/authzen/access/docs/v0.1.0-02:authzen.access.v1) the definitions or [generate](https://buf.build/authzen/access/sdks/v0.1.0-02:protobuf) server and client language bindings.
