@@ -81,6 +81,37 @@ service Access {
       deprecated: false
     };
   }
+
+  // subject search
+  rpc SubjectSearch(SubjectSearchRequest) returns (SubjectSearchResponse) {
+    option (google.api.http) = {
+      post: "/access/v1/subjectsearch"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "authzen"
+      summary: "Subject Search API"
+      description: "TBD."
+      operation_id: "openid.authzen.access.v1.subjectsearch.post"
+      deprecated: false
+    };
+  }
+
+
+  // resource search
+  rpc ResourceSearch(ResourceSearchRequest) returns (ResourceSearchResponse) {
+    option (google.api.http) = {
+      post: "/access/v1/resourcesearch"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "authzen"
+      summary: "Resource Search API"
+      description: "TBD."
+      operation_id: "openid.authzen.access.v1.resourcesearch.post"
+      deprecated: false
+    };
+  }
 }
 
 message EvaluationRequest {
@@ -108,6 +139,30 @@ message EvaluationsResponse {
   repeated EvaluationResponse decisions = 1;
 }
 
+message SubjectSearchRequest {
+  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
+  Action action = 2 [(google.api.field_behavior) = REQUIRED];
+  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Page page = 4;
+}
+
+message SubjectSearchResponse {
+  repeated Subject results = 1;
+  Page page = 2;
+}
+
+message ResourceSearchRequest {
+  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
+  Action action = 2 [(google.api.field_behavior) = REQUIRED];
+  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Page page = 4;
+}
+
+message ResourceSearchResponse {
+  repeated Resource results = 1;
+  Page page = 2;
+}
+
 message Subject {
   string type = 1 [(google.api.field_behavior) = REQUIRED];
   string id = 2 [(google.api.field_behavior) = REQUIRED];
@@ -123,4 +178,8 @@ message Resource {
   string type = 1 [(google.api.field_behavior) = REQUIRED];
   string id = 2 [(google.api.field_behavior) = REQUIRED];
   google.protobuf.Struct properties = 3;
+}
+
+message Page {
+  string next_token = 1;
 }
