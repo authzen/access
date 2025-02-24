@@ -97,7 +97,6 @@ service Access {
     };
   }
 
-
   // resource search
   rpc ResourceSearch(ResourceSearchRequest) returns (ResourceSearchResponse) {
     option (google.api.http) = {
