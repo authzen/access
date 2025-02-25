@@ -11,7 +11,7 @@ option go_package = "github.com/authzen/access/v1;access";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "OpenID AuthZen Access Service"
-    version: "1.0.0-2"
+    version: "1.0.0-3"
     contact: {
       name: ""
       url: ""
@@ -25,7 +25,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
   external_docs: {
     url: "https://openid.github.io/authzen/"
-    description: "Authorization API 1.0 - draft 02"
+    description: "Authorization API 1.0 - draft 03"
   }
 
   schemes: HTTP
@@ -111,8 +111,24 @@ service Access {
       deprecated: false
     };
   }
+
+  // action search
+  rpc ActionSearch(ActionSearchRequest) returns (ActionSearchResponse) {
+    option (google.api.http) = {
+      post: "/access/v1/actionsearch"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "authzen"
+      summary: "Action Search API"
+      description: "TBD."
+      operation_id: "openid.authzen.access.v1.actionsearch.post"
+      deprecated: false
+    };
+  }
 }
 
+// https://openid.github.io/authzen/#name-the-access-evaluation-api-r
 message EvaluationRequest {
   Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
   Action action = 2 [(google.api.field_behavior) = REQUIRED];
@@ -120,11 +136,13 @@ message EvaluationRequest {
   google.protobuf.Struct context = 4;
 }
 
+// https://openid.github.io/authzen/#name-the-access-evaluation-api-re
 message EvaluationResponse {
   bool decision = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
   google.protobuf.Struct context = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
+// https://openid.github.io/authzen/#name-the-access-evaluations-api-
 message EvaluationsRequest {
   Subject subject = 1;
   Action action = 2;
@@ -134,45 +152,70 @@ message EvaluationsRequest {
   google.protobuf.Struct options = 6;
 }
 
+// https://openid.github.io/authzen/#name-access-evaluations-api-resp
 message EvaluationsResponse {
   repeated EvaluationResponse decisions = 1;
 }
 
+// https://openid.github.io/authzen/#name-the-subject-search-api-requ
 message SubjectSearchRequest {
   Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
   Action action = 2 [(google.api.field_behavior) = REQUIRED];
   Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
-  Page page = 4;
+  google.protobuf.Struct context = 4;
+  Page page = 5;
 }
 
+// https://openid.github.io/authzen/#name-the-subject-search-api-resp
 message SubjectSearchResponse {
   repeated Subject results = 1;
   Page page = 2;
 }
 
+// https://openid.github.io/authzen/#name-the-resource-search-api-req
 message ResourceSearchRequest {
   Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
   Action action = 2 [(google.api.field_behavior) = REQUIRED];
   Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
-  Page page = 4;
+  google.protobuf.Struct context = 4;
+  Page page = 5;
 }
 
+// https://openid.github.io/authzen/#name-the-resource-search-api-res
 message ResourceSearchResponse {
   repeated Resource results = 1;
   Page page = 2;
 }
 
+// https://openid.github.io/authzen/#name-the-action-search-api-reque
+message ActionSearchRequest {
+  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
+  Action action = 2 [(google.api.field_behavior) = REQUIRED];
+  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  google.protobuf.Struct context = 4;
+  Page page = 5;
+}
+
+// https://openid.github.io/authzen/#name-the-action-search-api-respo
+message ActionSearchResponse {
+  repeated Action results = 1;
+  Page page = 2;
+}
+
+// https://openid.github.io/authzen/#name-subject
 message Subject {
   string type = 1 [(google.api.field_behavior) = REQUIRED];
   string id = 2 [(google.api.field_behavior) = REQUIRED];
   google.protobuf.Struct properties = 3;
 }
 
+// https://openid.github.io/authzen/#name-action
 message Action {
   string name = 1 [(google.api.field_behavior) = REQUIRED];
   google.protobuf.Struct properties = 2;
 }
 
+// https://openid.github.io/authzen/#name-resource
 message Resource {
   string type = 1 [(google.api.field_behavior) = REQUIRED];
   string id = 2 [(google.api.field_behavior) = REQUIRED];
