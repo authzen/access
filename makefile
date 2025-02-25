@@ -50,6 +50,11 @@ buf-lint:
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@${EXT_BIN_DIR}/buf lint
 
+.PHONY: buf-format
+buf-format:
+	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
+	@${EXT_BIN_DIR}/buf format --write
+
 .PHONY: buf-breaking
 buf-breaking: 
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
