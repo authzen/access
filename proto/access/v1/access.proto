@@ -85,14 +85,14 @@ service Access {
   // subject search
   rpc SubjectSearch(SubjectSearchRequest) returns (SubjectSearchResponse) {
     option (google.api.http) = {
-      post: "/access/v1/subjectsearch"
+      post: "/access/v1/search/subject"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: "authzen"
       summary: "Subject Search API"
       description: "TBD."
-      operation_id: "openid.authzen.access.v1.subjectsearch.post"
+      operation_id: "openid.authzen.access.v1.search.subject.post"
       deprecated: false
     };
   }
@@ -100,14 +100,14 @@ service Access {
   // resource search
   rpc ResourceSearch(ResourceSearchRequest) returns (ResourceSearchResponse) {
     option (google.api.http) = {
-      post: "/access/v1/resourcesearch"
+      post: "/access/v1/search/resource"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: "authzen"
       summary: "Resource Search API"
       description: "TBD."
-      operation_id: "openid.authzen.access.v1.resourcesearch.post"
+      operation_id: "openid.authzen.access.v1.search.post"
       deprecated: false
     };
   }
@@ -115,14 +115,14 @@ service Access {
   // action search
   rpc ActionSearch(ActionSearchRequest) returns (ActionSearchResponse) {
     option (google.api.http) = {
-      post: "/access/v1/actionsearch"
+      post: "/access/v1/search/action"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       tags: "authzen"
       summary: "Action Search API"
       description: "TBD."
-      operation_id: "openid.authzen.access.v1.actionsearch.post"
+      operation_id: "openid.authzen.access.v1.search.action.post"
       deprecated: false
     };
   }
