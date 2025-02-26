@@ -3,7 +3,6 @@ syntax = "proto3";
 package authzen.access.v1;
 
 import "google/api/annotations.proto";
-import "google/api/field_behavior.proto";
 import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -130,16 +129,16 @@ service Access {
 
 // https://openid.github.io/authzen/#name-the-access-evaluation-api-r
 message EvaluationRequest {
-  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
-  Action action = 2 [(google.api.field_behavior) = REQUIRED];
-  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Subject subject = 1;
+  Action action = 2;
+  Resource resource = 3;
   google.protobuf.Struct context = 4;
 }
 
 // https://openid.github.io/authzen/#name-the-access-evaluation-api-re
 message EvaluationResponse {
-  bool decision = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  google.protobuf.Struct context = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  bool decision = 1;
+  google.protobuf.Struct context = 2;
 }
 
 // https://openid.github.io/authzen/#name-the-access-evaluations-api-
@@ -159,9 +158,9 @@ message EvaluationsResponse {
 
 // https://openid.github.io/authzen/#name-the-subject-search-api-requ
 message SubjectSearchRequest {
-  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
-  Action action = 2 [(google.api.field_behavior) = REQUIRED];
-  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Subject subject = 1;
+  Action action = 2;
+  Resource resource = 3;
   google.protobuf.Struct context = 4;
   Page page = 5;
 }
@@ -174,9 +173,9 @@ message SubjectSearchResponse {
 
 // https://openid.github.io/authzen/#name-the-resource-search-api-req
 message ResourceSearchRequest {
-  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
-  Action action = 2 [(google.api.field_behavior) = REQUIRED];
-  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Subject subject = 1;
+  Action action = 2;
+  Resource resource = 3;
   google.protobuf.Struct context = 4;
   Page page = 5;
 }
@@ -189,9 +188,9 @@ message ResourceSearchResponse {
 
 // https://openid.github.io/authzen/#name-the-action-search-api-reque
 message ActionSearchRequest {
-  Subject subject = 1 [(google.api.field_behavior) = REQUIRED];
-  Action action = 2 [(google.api.field_behavior) = REQUIRED];
-  Resource resource = 3 [(google.api.field_behavior) = REQUIRED];
+  Subject subject = 1;
+  Action action = 2;
+  Resource resource = 3;
   google.protobuf.Struct context = 4;
   Page page = 5;
 }
@@ -204,21 +203,21 @@ message ActionSearchResponse {
 
 // https://openid.github.io/authzen/#name-subject
 message Subject {
-  string type = 1 [(google.api.field_behavior) = REQUIRED];
-  string id = 2 [(google.api.field_behavior) = REQUIRED];
+  string type = 1;
+  string id = 2;
   google.protobuf.Struct properties = 3;
 }
 
 // https://openid.github.io/authzen/#name-action
 message Action {
-  string name = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 1;
   google.protobuf.Struct properties = 2;
 }
 
 // https://openid.github.io/authzen/#name-resource
 message Resource {
-  string type = 1 [(google.api.field_behavior) = REQUIRED];
-  string id = 2 [(google.api.field_behavior) = REQUIRED];
+  string type = 1;
+  string id = 2;
   google.protobuf.Struct properties = 3;
 }
 
