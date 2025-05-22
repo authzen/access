@@ -13,8 +13,8 @@ EXT_DIR            := ./.ext
 EXT_BIN_DIR        := ${EXT_DIR}/bin
 EXT_TMP_DIR        := ${EXT_DIR}/tmp
 
-SVU_VER 	         := 2.2.0
-BUF_VER            := 1.50.0
+SVU_VER 	         := 3.2.3
+BUF_VER            := 1.54.0
 
 PROJECT            := access
 
