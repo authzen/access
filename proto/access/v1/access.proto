@@ -153,7 +153,7 @@ message EvaluationsRequest {
 
 // https://openid.github.io/authzen/#name-access-evaluations-api-resp
 message EvaluationsResponse {
-  repeated EvaluationResponse decisions = 1;
+  repeated EvaluationResponse evaluations = 1;
 }
 
 // https://openid.github.io/authzen/#name-the-subject-search-api-requ
