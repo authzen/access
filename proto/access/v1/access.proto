@@ -10,7 +10,7 @@ option go_package = "github.com/authzen/access/v1;access";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "OpenID AuthZen Access Service"
-    version: "1.0.0-3"
+    version: "1.0.0-5"
     contact: {
       name: ""
       url: ""
@@ -24,7 +24,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 
   external_docs: {
     url: "https://openid.github.io/authzen/"
-    description: "Authorization API 1.0 - draft 03"
+    description: "Authorization API 1.0 - draft 05"
   }
 
   schemes: HTTP
@@ -51,7 +51,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service Access {
-  // evaluation
+  // evaluation (https://openid.github.io/authzen/#name-access-evaluation-api)
   rpc Evaluation(EvaluationRequest) returns (EvaluationResponse) {
     option (google.api.http) = {
       post: "/access/v1/evaluation"
@@ -66,7 +66,7 @@ service Access {
     };
   }
 
-  // evaluations
+  // evaluations (https://openid.github.io/authzen/#name-access-evaluations-api)
   rpc Evaluations(EvaluationsRequest) returns (EvaluationsResponse) {
     option (google.api.http) = {
       post: "/access/v1/evaluations"
@@ -81,7 +81,7 @@ service Access {
     };
   }
 
-  // subject search
+  // subject search (https://openid.github.io/authzen/#name-subject-search-api)
   rpc SubjectSearch(SubjectSearchRequest) returns (SubjectSearchResponse) {
     option (google.api.http) = {
       post: "/access/v1/search/subject"
@@ -96,7 +96,7 @@ service Access {
     };
   }
 
-  // resource search
+  // resource search (https://openid.github.io/authzen/#name-resource-search-api)
   rpc ResourceSearch(ResourceSearchRequest) returns (ResourceSearchResponse) {
     option (google.api.http) = {
       post: "/access/v1/search/resource"
@@ -111,7 +111,7 @@ service Access {
     };
   }
 
-  // action search
+  // action search (https://openid.github.io/authzen/#name-action-search-api)
   rpc ActionSearch(ActionSearchRequest) returns (ActionSearchResponse) {
     option (google.api.http) = {
       post: "/access/v1/search/action"
@@ -132,7 +132,7 @@ message EvaluationRequest {
   Subject subject = 1;
   Action action = 2;
   Resource resource = 3;
-  google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 4;
 }
 
 // https://openid.github.io/authzen/#name-the-access-evaluation-api-re
@@ -146,7 +146,7 @@ message EvaluationsRequest {
   Subject subject = 1;
   Action action = 2;
   Resource resource = 3;
-  google.protobuf.Struct context = 4;
+  optional google.protobuf.Struct context = 4;
   repeated EvaluationRequest evaluations = 5;
   google.protobuf.Struct options = 6;
 }
@@ -162,13 +162,13 @@ message SubjectSearchRequest {
   Action action = 2;
   Resource resource = 3;
   google.protobuf.Struct context = 4;
-  Page page = 5;
+  PaginationRequest page = 10;
 }
 
 // https://openid.github.io/authzen/#name-the-subject-search-api-resp
 message SubjectSearchResponse {
   repeated Subject results = 1;
-  Page page = 2;
+  PaginationResponse page = 10;
 }
 
 // https://openid.github.io/authzen/#name-the-resource-search-api-req
@@ -177,13 +177,13 @@ message ResourceSearchRequest {
   Action action = 2;
   Resource resource = 3;
   google.protobuf.Struct context = 4;
-  Page page = 5;
+  PaginationRequest page = 10;
 }
 
 // https://openid.github.io/authzen/#name-the-resource-search-api-res
 message ResourceSearchResponse {
   repeated Resource results = 1;
-  Page page = 2;
+  PaginationResponse page = 10;
 }
 
 // https://openid.github.io/authzen/#name-the-action-search-api-reque
@@ -192,35 +192,46 @@ message ActionSearchRequest {
   Action action = 2;
   Resource resource = 3;
   google.protobuf.Struct context = 4;
-  Page page = 5;
+  PaginationRequest page = 10;
 }
 
 // https://openid.github.io/authzen/#name-the-action-search-api-respo
 message ActionSearchResponse {
   repeated Action results = 1;
-  Page page = 2;
+  PaginationResponse page = 10;
 }
 
 // https://openid.github.io/authzen/#name-subject
 message Subject {
   string type = 1;
   string id = 2;
-  google.protobuf.Struct properties = 3;
+  optional google.protobuf.Struct properties = 3;
 }
 
 // https://openid.github.io/authzen/#name-action
 message Action {
   string name = 1;
-  google.protobuf.Struct properties = 2;
+  optional google.protobuf.Struct properties = 2;
 }
 
 // https://openid.github.io/authzen/#name-resource
 message Resource {
   string type = 1;
   string id = 2;
-  google.protobuf.Struct properties = 3;
+  optional google.protobuf.Struct properties = 3;
 }
 
-message Page {
+// https://openid.github.io/authzen/#name-paginated-requests
+message PaginationRequest {
+  optional string token = 1;
+  optional int32 limit = 2;
+  optional google.protobuf.Struct properties = 3;
+}
+
+// https://openid.github.io/authzen/#name-paginated-responses
+message PaginationResponse {
   string next_token = 1;
+  optional int64 count = 2;
+  optional int64 total = 3;
+  optional google.protobuf.Struct properties = 4;
 }
