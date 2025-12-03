@@ -12,8 +12,8 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     title: "OpenID AuthZen Access Service"
     version: "1.0.0-5"
     contact: {
-      name: ""
-      url: ""
+      name: "OpenID Foundation - AuthZEN Working Group"
+      url: "https://openid.net/wg/authzen/"
       email: ""
     }
     license: {
