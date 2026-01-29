@@ -14,22 +14,24 @@ EXT_BIN_DIR        := ${EXT_DIR}/bin
 EXT_TMP_DIR        := ${EXT_DIR}/tmp
 
 SVU_VER 	         := 3.3.0
-BUF_VER            := 1.61.0
+BUF_VER            := 1.64.0
 
 PROJECT            := access
 
-GIT_ORG            := "github.com/authzen"
-GIT_REPO           := "${GIT_ORG}/${PROJECT}"
+GIT_ORG            := github.com/authzen
+GIT_REPO           := ${GIT_ORG}/${PROJECT}
 
-BUF_ORG            := "buf.build/authzen"
-BUF_REPO           := "${BUF_ORG}/${PROJECT}"
-BUF_LATEST         := $(shell ${EXT_BIN_DIR}/buf registry module label list ${BUF_REPO} --format json --reverse | jq -r '.labels[0].name')
+BUF_ORG            := buf.build/authzen
+BUF_REPO           := ${BUF_ORG}/${PROJECT}
+BUF_LATEST         := $(shell ${EXT_BIN_DIR}/buf registry module label list ${BUF_REPO} --format json | jq -r '.labels[0].name')
 BUF_BIN_DIR        := ./bin
 BUF_BIN_IMAGE      := "${PROJECT}.bin"
 
 RELEASE_TAG        := $$(${EXT_BIN_DIR}/svu current)
 
-.DEFAULT_GOAL      := buf-build
+.DEFAULT_GOAL      := buf-default
+
+buf-default: buf-format buf-build buf-lint buf-breaking buf-generate-dev
 
 .PHONY: buf-login
 buf-login:
@@ -64,6 +66,16 @@ buf-breaking:
 buf-push:
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@${EXT_BIN_DIR}/buf push --label ${RELEASE_TAG}
+
+.PHONY: buf-generate
+buf-generate: 
+	@echo -e "$(ATTN_COLOR)==> $@ ${BUF_REPO}:${BUF_LATEST}$(NO_COLOR)"
+	@${EXT_BIN_DIR}/buf generate ${BUF_REPO}:${BUF_LATEST}
+
+.PHONY: buf-generate-dev
+buf-generate-dev: 
+	@echo -e "$(ATTN_COLOR)==> $@ ${BUF_BIN_DIR}/${BUF_BIN_IMAGE}$(NO_COLOR)"
+	@${EXT_BIN_DIR}/buf generate ${BUF_BIN_DIR}/${BUF_BIN_IMAGE}
 
 info: 
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
@@ -109,6 +121,11 @@ install-svu: ${EXT_BIN_DIR} ${EXT_TMP_DIR}
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@GOBIN=${EXT_BIN_DIR} go install github.com/caarlos0/svu/v3@v${SVU_VER}
 	@${EXT_BIN_DIR}/svu --version
+
+.PHONY: install-openapi-spec-converter
+install-openapi-spec-converter: ${EXT_BIN_DIR} ${EXT_TMP_DIR}
+	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
+	@GOBIN=${EXT_BIN_DIR} go install github.com/dense-analysis/openapi-spec-converter/cmd/openapi-spec-converter@latest
 
 .PHONY: clean
 clean:
