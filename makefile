@@ -71,11 +71,15 @@ buf-push:
 buf-generate: 
 	@echo -e "$(ATTN_COLOR)==> $@ ${BUF_REPO}:${BUF_LATEST}$(NO_COLOR)"
 	@${EXT_BIN_DIR}/buf generate ${BUF_REPO}:${BUF_LATEST}
+	@${EXT_BIN_DIR}/openapi-spec-converter -f json -o openapi/access/v1/access.openapi.json -t 3.1 openapi/access/v1/access.swagger.json
+	@rm -f openapi/access/v1/access.swagger.json
 
 .PHONY: buf-generate-dev
-buf-generate-dev: 
+buf-generate-dev:
 	@echo -e "$(ATTN_COLOR)==> $@ ${BUF_BIN_DIR}/${BUF_BIN_IMAGE}$(NO_COLOR)"
 	@${EXT_BIN_DIR}/buf generate ${BUF_BIN_DIR}/${BUF_BIN_IMAGE}
+	@${EXT_BIN_DIR}/openapi-spec-converter -f json -o openapi/access/v1/access.openapi.json -t 3.1 openapi/access/v1/access.swagger.json
+	@rm -f openapi/access/v1/access.swagger.json
 
 info: 
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
@@ -94,16 +98,10 @@ info:
 	@echo "EXT_BIN_DIR:   ${EXT_BIN_DIR}"
 	@echo "EXT_TMP_DIR:   ${EXT_TMP_DIR}"
 	
-deps: ${EXT_BIN_DIR}/buf ${EXT_BIN_DIR}/svu info
+deps: ${EXT_BIN_DIR}/buf ${EXT_BIN_DIR}/svu ${EXT_BIN_DIR}/openapi-spec-converter
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@gh --version >/dev/null 2>&1 || { echo >&2 "required dependency 'gh' is not installed.  Aborting."; exit 1; }
 	@jq --version >/dev/null 2>&1 || { echo >&2 "required dependency 'jq' is not installed.  Aborting."; exit 1; }
-
-${EXT_BIN_DIR}/buf: ${EXT_BIN_DIR}
-	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
-	@gh release download v${BUF_VER} --repo https://github.com/bufbuild/buf --pattern "buf-$$(uname -s)-$$(uname -m)" --output "${EXT_BIN_DIR}/buf" --clobber
-	@chmod +x ${EXT_BIN_DIR}/buf
-	@${EXT_BIN_DIR}/buf --version
 
 ${EXT_BIN_DIR}/buf: install-buf
 
@@ -117,13 +115,15 @@ install-buf: ${EXT_BIN_DIR}
 ${EXT_BIN_DIR}/svu: install-svu
 
 .PHONY: install-svu
-install-svu: ${EXT_BIN_DIR} ${EXT_TMP_DIR}
+install-svu: ${EXT_BIN_DIR}
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@GOBIN=${EXT_BIN_DIR} go install github.com/caarlos0/svu/v3@v${SVU_VER}
 	@${EXT_BIN_DIR}/svu --version
 
+${EXT_BIN_DIR}/openapi-spec-converter: install-openapi-spec-converter
+
 .PHONY: install-openapi-spec-converter
-install-openapi-spec-converter: ${EXT_BIN_DIR} ${EXT_TMP_DIR}
+install-openapi-spec-converter: ${EXT_BIN_DIR}
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@GOBIN=${EXT_BIN_DIR} go install github.com/dense-analysis/openapi-spec-converter/cmd/openapi-spec-converter@latest
 
