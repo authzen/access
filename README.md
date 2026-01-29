@@ -18,7 +18,7 @@ Buf image is published to [https://buf.build/authzen/access](https://buf.build/a
 
 ## Implementations:
 
-|Language  | v1 | v4 |GitHub Repo|
-|----------|----|----|-----------|
-|Go        | X  | X  |[https://github.com/authzen/access.go](https://github.com/authzen/access.go)|
+|Language  | v1 | GitHub Repo|
+|----------|----| -----------|
+|Go        | X  | [https://github.com/authzen/access.go](https://github.com/authzen/access.go)|
 
