@@ -10,7 +10,7 @@ option go_package = "github.com/authzen/access/v1;access";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "OpenID AuthZen Access Service"
-    version: "1.0.0-5"
+    version: "1.0.0"
     contact: {
       name: "OpenID Foundation - AuthZEN Working Group"
       url: "https://openid.net/wg/authzen/"
@@ -18,19 +18,37 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     }
     license: {
       name: "Apache v2"
-      url: ""
+      url: "https://github.com/authzen/access/blob/main/LICENSE"
     }
   }
 
   external_docs: {
     url: "https://openid.github.io/authzen/"
-    description: "Authorization API 1.0 - draft 05"
+    description: "Authorization API 1.0"
   }
 
   schemes: HTTP
   schemes: HTTPS
   consumes: "application/json"
   produces: "application/json"
+
+  security_definitions: {
+    security: {
+      key: "AuthorizationHeader"
+      value: {
+        type: TYPE_API_KEY
+        in: IN_HEADER
+        name: "authorization"
+      }
+    }
+  }
+
+  security: {
+    security_requirement: {
+      key: "AuthorizationHeader"
+      value: {}
+    }
+  }
 
   responses: {
     key: "400"

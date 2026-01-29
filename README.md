@@ -2,11 +2,23 @@
 
 ![OpenID AuthZEN](https://github.com/authzen/art/blob/main/logo/logo-rect.png)
 
-## Access Service
+OpenID AuthZEN Access Service protobuf & gRPC definitions
 
-This repo contains protobuf definitions for the OpenID AuthZEN Access Service. 
+## API Documentation:
 
-The current implementation reflects [Authorization API 1.0 – draft 05](https://openid.github.io/authzen/) of the specification.
+* [OpenID AuthZEN Authorization API 1.0 specification](https://openid.github.io/authzen/)
 
-You can browse the schema definitions in the Buf Registry [buf.build/auzthzen/access](https://buf.build/authzen/access)
+* [Access gRPC API](./docs/api.md)
+
+* [Access REST API](https://authzen.readme.io)
+
+## Publication:
+
+Buf image is published to [https://buf.build/authzen/access](https://buf.build/authzen/access)
+
+## Implementations:
+
+|Language  | v1 | v4 |GitHub Repo|
+|----------|----|----|-----------|
+|Go        | X  | X  |[https://github.com/authzen/access.go](https://github.com/authzen/access.go)|
 
