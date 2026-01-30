@@ -130,8 +130,8 @@ https://openid.github.io/authzen/#name-the-access-evaluations-api-
 | action | [Action](#authzen-access-v1-Action) |  |  |
 | resource | [Resource](#authzen-access-v1-Resource) |  |  |
 | context | [google.protobuf.Struct](#google-protobuf-Struct) | optional |  |
+| options | [google.protobuf.Struct](#google-protobuf-Struct) | optional |  |
 | evaluations | [EvaluationRequest](#authzen-access-v1-EvaluationRequest) | repeated |  |
-| options | [google.protobuf.Struct](#google-protobuf-Struct) |  |  |
 
 
 
