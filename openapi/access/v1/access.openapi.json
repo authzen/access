@@ -10,7 +10,7 @@
       "name": "Apache v2",
       "url": "https://github.com/authzen/access/blob/main/LICENSE"
     },
-    "version": "1.0.1"
+    "version": "1.0.0"
   },
   "paths": {
     "/access/v1/evaluation": {
