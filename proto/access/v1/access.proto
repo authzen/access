@@ -165,8 +165,8 @@ message EvaluationsRequest {
   Action action = 2;
   Resource resource = 3;
   optional google.protobuf.Struct context = 4;
-  repeated EvaluationRequest evaluations = 5;
-  google.protobuf.Struct options = 6;
+  optional google.protobuf.Struct options = 5;
+  repeated EvaluationRequest evaluations = 6;
 }
 
 // https://openid.github.io/authzen/#name-access-evaluations-api-resp
