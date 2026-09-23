@@ -13,8 +13,8 @@ EXT_DIR            := ${PWD}/.ext
 EXT_BIN_DIR        := ${EXT_DIR}/bin
 EXT_TMP_DIR        := ${EXT_DIR}/tmp
 
-SVU_VER 	         := 3.3.0
-BUF_VER            := 1.64.0
+SVU_VER 	         := 3.4.1
+BUF_VER            := 1.73.0
 
 PROJECT            := access
 
@@ -39,7 +39,7 @@ buf-login:
 	@${EXT_BIN_DIR}/buf registry login --username ${USER}
 
 .PHONY: buf-build
-buf-build: ${BUF_BIN_DIR} buf.lock
+buf-build: ${BUF_BIN_DIR} buf.lock buf-format
 	@echo -e "$(ATTN_COLOR)==> $@ $(NO_COLOR)"
 	@${EXT_BIN_DIR}/buf build --output ${BUF_BIN_DIR}/${BUF_BIN_IMAGE}
 
