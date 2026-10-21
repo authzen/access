@@ -36,15 +36,12 @@ option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_document) = {
 
   tags: [
     {name: "authzen"},
-    {name: "evaluation"},
-    {name: "evaluations"},
+    {name: "decision"},
+    {name: "decisions"},
+    {name: "search"},
     {name: "subject"},
     {name: "action"},
-    {name: "resource"},
-    {name: "properties"},
-    {name: "context"},
-    {name: "check"},
-    {name: "search"}
+    {name: "resource"}
   ]
 
   external_docs: {
@@ -65,11 +62,10 @@ service Access {
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       tags: [
         "authzen",
-        "evaluation",
-        "check"
+        "decision"
       ]
       summary: "Access Evaluation API"
-      description: "TBD"
+      description: "The Access Evaluation API defines the message exchange pattern between a PEP and a PDP for executing a single access evaluation."
       // external_docs: {}
       operation_id: "openid.authzen.access.v1.evaluation.post"
       deprecated: false
@@ -87,11 +83,10 @@ service Access {
     option (grpc.gateway.protoc_gen_openapiv3.options.openapiv3_operation) = {
       tags: [
         "authzen",
-        "evaluations",
-        "check"
+        "decisions"
       ]
       summary: "Access Evaluations API"
-      description: "TBD."
+      description: "The Access Evaluations API defines the message exchange pattern between a PEP and a PDP for evaluating multiple access evaluations within the scope of a single message exchange (also known as \"boxcarring\" requests)"
       // external_docs: {}
       operation_id: "openid.authzen.access.v1.evaluations.post"
       deprecated: false
@@ -114,7 +109,7 @@ service Access {
       ]
       tags: "authzen"
       summary: "Subject Search API"
-      description: "TBD."
+      description: "The Subject Search API returns all subjects of a given type that are permitted according to the provided Action, Resource, and Context."
       // external_docs: {}
       operation_id: "openid.authzen.access.v1.search.subject.post"
       deprecated: false
@@ -136,7 +131,7 @@ service Access {
         "search"
       ]
       summary: "Resource Search API"
-      description: "TBD."
+      description: "The Resource Search API returns all resources of a given type that are permitted according to the provided Action, Subject, and Context."
       // external_docs: {}
       operation_id: "openid.authzen.access.v1.search.post"
       deprecated: false
@@ -158,7 +153,7 @@ service Access {
         "search"
       ]
       summary: "Action Search API"
-      description: "TBD."
+      description: "The Action Search API returns all actions that are permitted according to the provided Subject, Resource, and Context."
       // external_docs: {}
       operation_id: "openid.authzen.access.v1.search.action.post"
       deprecated: false
