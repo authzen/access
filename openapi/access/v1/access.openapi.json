@@ -1,5 +1,5 @@
 {
-  "openapi": "3.1.1",
+  "openapi": "3.1.0",
   "info": {
     "title": "OpenID AuthZen Access Service",
     "contact": {
@@ -12,25 +12,50 @@
     },
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "{{.Scheme}}://{{.Host}}",
+      "description": "OpenID AuthZEN service"
+    }
+  ],
   "paths": {
     "/access/v1/evaluation": {
       "post": {
         "tags": [
-          "authzen"
+          "authzen",
+          "decision"
         ],
         "summary": "Access Evaluation API",
-        "description": "TBD",
+        "description": "The Access Evaluation API defines the message exchange pattern between a PEP and a PDP for executing a single access evaluation.",
         "operationId": "openid.authzen.access.v1.evaluation.post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/v1EvaluationRequest"
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Action"
+                  },
+                  "context": {
+                    "type": "object"
+                  },
+                  "resource": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Resource"
+                  },
+                  "subject": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Subject"
+                  }
+                },
+                "required": [
+                  "subject",
+                  "action",
+                  "resource"
+                ]
               }
             }
           },
-          "required": true,
-          "x-originalParamName": "body"
+          "required": true
         },
         "responses": {
           "default": {
@@ -38,50 +63,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/google.rpc.Status"
                 }
               }
             }
           },
           "200": {
-            "description": "A successful response.",
+            "description": "https://openid.github.io/authzen/#name-the-access-evaluation-api-re",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v1EvaluationResponse"
+                  "$ref": "#/components/schemas/authzen.access.v1.EvaluationResponse"
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           }
@@ -91,21 +84,44 @@
     "/access/v1/evaluations": {
       "post": {
         "tags": [
-          "authzen"
+          "authzen",
+          "decisions"
         ],
         "summary": "Access Evaluations API",
-        "description": "TBD.",
+        "description": "The Access Evaluations API defines the message exchange pattern between a PEP and a PDP for evaluating multiple access evaluations within the scope of a single message exchange (also known as \"boxcarring\" requests)",
         "operationId": "openid.authzen.access.v1.evaluations.post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/v1EvaluationsRequest"
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Action"
+                  },
+                  "context": {
+                    "type": "object"
+                  },
+                  "evaluations": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/authzen.access.v1.EvaluationRequest"
+                    }
+                  },
+                  "options": {
+                    "type": "object"
+                  },
+                  "resource": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Resource"
+                  },
+                  "subject": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Subject"
+                  }
+                }
               }
             }
           },
-          "required": true,
-          "x-originalParamName": "body"
+          "required": true
         },
         "responses": {
           "default": {
@@ -113,200 +129,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/google.rpc.Status"
                 }
               }
             }
           },
           "200": {
-            "description": "A successful response.",
+            "description": "https://openid.github.io/authzen/#name-access-evaluations-api-resp",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v1EvaluationsResponse"
+                  "$ref": "#/components/schemas/authzen.access.v1.EvaluationsResponse"
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/access/v1/search/action": {
-      "post": {
-        "tags": [
-          "authzen"
-        ],
-        "summary": "Action Search API",
-        "description": "TBD.",
-        "operationId": "openid.authzen.access.v1.search.action.post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/v1ActionSearchRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-originalParamName": "body"
-        },
-        "responses": {
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v1ActionSearchResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/access/v1/search/resource": {
-      "post": {
-        "tags": [
-          "authzen"
-        ],
-        "summary": "Resource Search API",
-        "description": "TBD.",
-        "operationId": "openid.authzen.access.v1.search.post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/v1ResourceSearchRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-originalParamName": "body"
-        },
-        "responses": {
-          "default": {
-            "description": "An unexpected error response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/v1ResourceSearchResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           }
@@ -316,21 +150,45 @@
     "/access/v1/search/subject": {
       "post": {
         "tags": [
+          "authzen",
+          "subject",
+          "search",
           "authzen"
         ],
         "summary": "Subject Search API",
-        "description": "TBD.",
+        "description": "The Subject Search API returns all subjects of a given type that are permitted according to the provided Action, Resource, and Context.",
         "operationId": "openid.authzen.access.v1.search.subject.post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/v1SubjectSearchRequest"
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Action"
+                  },
+                  "context": {
+                    "type": "object"
+                  },
+                  "page": {
+                    "$ref": "#/components/schemas/authzen.access.v1.PaginationRequest"
+                  },
+                  "resource": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Resource"
+                  },
+                  "subject": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Subject"
+                  }
+                },
+                "required": [
+                  "subject",
+                  "action",
+                  "resource"
+                ]
               }
             }
           },
-          "required": true,
-          "x-originalParamName": "body"
+          "required": true
         },
         "responses": {
           "default": {
@@ -338,50 +196,150 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/rpcStatus"
+                  "$ref": "#/components/schemas/google.rpc.Status"
                 }
               }
             }
           },
           "200": {
-            "description": "A successful response.",
+            "description": "https://openid.github.io/authzen/#name-the-subject-search-api-resp",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/v1SubjectSearchResponse"
+                  "$ref": "#/components/schemas/authzen.access.v1.SubjectSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/access/v1/search/resource": {
+      "post": {
+        "tags": [
+          "authzen",
+          "resource",
+          "search"
+        ],
+        "summary": "Resource Search API",
+        "description": "The Resource Search API returns all resources of a given type that are permitted according to the provided Action, Subject, and Context.",
+        "operationId": "openid.authzen.access.v1.search.post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Action"
+                  },
+                  "context": {
+                    "type": "object"
+                  },
+                  "page": {
+                    "$ref": "#/components/schemas/authzen.access.v1.PaginationRequest"
+                  },
+                  "resource": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Resource"
+                  },
+                  "subject": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Subject"
+                  }
+                },
+                "required": [
+                  "subject",
+                  "action",
+                  "resource"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "An unexpected error response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/google.rpc.Status"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
+          "200": {
+            "description": "https://openid.github.io/authzen/#name-the-resource-search-api-res",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/authzen.access.v1.ResourceSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/access/v1/search/action": {
+      "post": {
+        "tags": [
+          "authzen",
+          "action",
+          "search"
+        ],
+        "summary": "Action Search API",
+        "description": "The Action Search API returns all actions that are permitted according to the provided Subject, Resource, and Context.",
+        "operationId": "openid.authzen.access.v1.search.action.post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Action"
+                  },
+                  "context": {
+                    "type": "object"
+                  },
+                  "page": {
+                    "$ref": "#/components/schemas/authzen.access.v1.PaginationRequest"
+                  },
+                  "resource": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Resource"
+                  },
+                  "subject": {
+                    "$ref": "#/components/schemas/authzen.access.v1.Subject"
+                  }
+                },
+                "required": [
+                  "subject",
+                  "action",
+                  "resource"
+                ]
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "An unexpected error response.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/google.rpc.Status"
+                }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "200": {
+            "description": "https://openid.github.io/authzen/#name-the-action-search-api-respo",
             "content": {
               "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "500": {
-            "description": "Internal error",
-            "content": {
-              "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/authzen.access.v1.ActionSearchResponse"
+                }
               }
             }
           }
@@ -391,43 +349,9 @@
   },
   "components": {
     "schemas": {
-      "protobufAny": {
+      "authzen.access.v1.Action": {
         "type": "object",
-        "properties": {
-          "@type": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": {}
-      },
-      "protobufNullValue": {
-        "type": "string",
-        "enum": [
-          "NULL_VALUE"
-        ],
-        "description": "Represents a JSON `null`.\n\n`NullValue` is a sentinel, using an enum with only one value to represent\nthe null value for the `Value` type union.\n\nA field of type `NullValue` with any value other than `0` is considered\ninvalid. Most ProtoJSON serializers will emit a Value with a `null_value` set\nas a JSON `null` regardless of the integer value, and so will round trip to\na `0` value.\n\n - NULL_VALUE: Null value.",
-        "default": "NULL_VALUE"
-      },
-      "rpcStatus": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/protobufAny"
-            }
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "v1Action": {
-        "type": "object",
+        "description": "https://openid.github.io/authzen/#name-action",
         "properties": {
           "name": {
             "type": "string"
@@ -435,116 +359,82 @@
           "properties": {
             "type": "object"
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-action"
+        }
       },
-      "v1ActionSearchRequest": {
+      "authzen.access.v1.ActionSearchResponse": {
         "type": "object",
-        "properties": {
-          "action": {
-            "$ref": "#/components/schemas/v1Action"
-          },
-          "context": {
-            "type": "object"
-          },
-          "page": {
-            "$ref": "#/components/schemas/v1PaginationRequest"
-          },
-          "resource": {
-            "$ref": "#/components/schemas/v1Resource"
-          },
-          "subject": {
-            "$ref": "#/components/schemas/v1Subject"
-          }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-action-search-api-reque"
-      },
-      "v1ActionSearchResponse": {
-        "type": "object",
+        "description": "https://openid.github.io/authzen/#name-the-action-search-api-respo",
         "properties": {
           "page": {
-            "$ref": "#/components/schemas/v1PaginationResponse"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/authzen.access.v1.PaginationResponse"
+              }
+            ],
+            "readOnly": true
           },
           "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/v1Action"
-            }
+              "$ref": "#/components/schemas/authzen.access.v1.Action"
+            },
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-action-search-api-respo"
+        }
       },
-      "v1EvaluationRequest": {
+      "authzen.access.v1.EvaluationRequest": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-the-access-evaluation-api-r",
         "properties": {
           "action": {
-            "$ref": "#/components/schemas/v1Action"
+            "$ref": "#/components/schemas/authzen.access.v1.Action"
           },
           "context": {
             "type": "object"
           },
           "resource": {
-            "$ref": "#/components/schemas/v1Resource"
+            "$ref": "#/components/schemas/authzen.access.v1.Resource"
           },
           "subject": {
-            "$ref": "#/components/schemas/v1Subject"
+            "$ref": "#/components/schemas/authzen.access.v1.Subject"
           }
         },
-        "title": "https://openid.github.io/authzen/#name-the-access-evaluation-api-r"
+        "required": [
+          "subject",
+          "action",
+          "resource"
+        ]
       },
-      "v1EvaluationResponse": {
+      "authzen.access.v1.EvaluationResponse": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-the-access-evaluation-api-re",
         "properties": {
           "context": {
-            "type": "object"
+            "type": "object",
+            "readOnly": true
           },
           "decision": {
-            "type": "boolean"
+            "type": "boolean",
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-access-evaluation-api-re"
+        }
       },
-      "v1EvaluationsRequest": {
+      "authzen.access.v1.EvaluationsResponse": {
         "type": "object",
-        "properties": {
-          "action": {
-            "$ref": "#/components/schemas/v1Action"
-          },
-          "context": {
-            "type": "object"
-          },
-          "evaluations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/v1EvaluationRequest"
-            }
-          },
-          "options": {
-            "type": "object"
-          },
-          "resource": {
-            "$ref": "#/components/schemas/v1Resource"
-          },
-          "subject": {
-            "$ref": "#/components/schemas/v1Subject"
-          }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-access-evaluations-api-"
-      },
-      "v1EvaluationsResponse": {
-        "type": "object",
+        "description": "https://openid.github.io/authzen/#name-access-evaluations-api-resp",
         "properties": {
           "evaluations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/v1EvaluationResponse"
-            }
+              "$ref": "#/components/schemas/authzen.access.v1.EvaluationResponse"
+            },
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-access-evaluations-api-resp"
+        }
       },
-      "v1PaginationRequest": {
+      "authzen.access.v1.PaginationRequest": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-paginated-requests",
         "properties": {
           "limit": {
             "type": "integer",
@@ -556,29 +446,35 @@
           "token": {
             "type": "string"
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-paginated-requests"
+        }
       },
-      "v1PaginationResponse": {
+      "authzen.access.v1.PaginationResponse": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-paginated-responses",
         "properties": {
           "count": {
-            "type": "string"
+            "type": "string",
+            "format": "int64",
+            "readOnly": true
           },
           "next_token": {
-            "type": "string"
+            "type": "string",
+            "readOnly": true
           },
           "properties": {
-            "type": "object"
+            "type": "object",
+            "readOnly": true
           },
           "total": {
-            "type": "string"
+            "type": "string",
+            "format": "int64",
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-paginated-responses"
+        }
       },
-      "v1Resource": {
+      "authzen.access.v1.Resource": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-resource",
         "properties": {
           "id": {
             "type": "string"
@@ -589,47 +485,32 @@
           "type": {
             "type": "string"
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-resource"
+        }
       },
-      "v1ResourceSearchRequest": {
+      "authzen.access.v1.ResourceSearchResponse": {
         "type": "object",
-        "properties": {
-          "action": {
-            "$ref": "#/components/schemas/v1Action"
-          },
-          "context": {
-            "type": "object"
-          },
-          "page": {
-            "$ref": "#/components/schemas/v1PaginationRequest"
-          },
-          "resource": {
-            "$ref": "#/components/schemas/v1Resource"
-          },
-          "subject": {
-            "$ref": "#/components/schemas/v1Subject"
-          }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-resource-search-api-req"
-      },
-      "v1ResourceSearchResponse": {
-        "type": "object",
+        "description": "https://openid.github.io/authzen/#name-the-resource-search-api-res",
         "properties": {
           "page": {
-            "$ref": "#/components/schemas/v1PaginationResponse"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/authzen.access.v1.PaginationResponse"
+              }
+            ],
+            "readOnly": true
           },
           "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/v1Resource"
-            }
+              "$ref": "#/components/schemas/authzen.access.v1.Resource"
+            },
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-resource-search-api-res"
+        }
       },
-      "v1Subject": {
+      "authzen.access.v1.Subject": {
         "type": "object",
+        "description": "https://openid.github.io/authzen/#name-subject",
         "properties": {
           "id": {
             "type": "string"
@@ -640,60 +521,81 @@
           "type": {
             "type": "string"
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-subject"
+        }
       },
-      "v1SubjectSearchRequest": {
+      "authzen.access.v1.SubjectSearchResponse": {
         "type": "object",
-        "properties": {
-          "action": {
-            "$ref": "#/components/schemas/v1Action"
-          },
-          "context": {
-            "type": "object"
-          },
-          "page": {
-            "$ref": "#/components/schemas/v1PaginationRequest"
-          },
-          "resource": {
-            "$ref": "#/components/schemas/v1Resource"
-          },
-          "subject": {
-            "$ref": "#/components/schemas/v1Subject"
-          }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-subject-search-api-requ"
-      },
-      "v1SubjectSearchResponse": {
-        "type": "object",
+        "description": "https://openid.github.io/authzen/#name-the-subject-search-api-resp",
         "properties": {
           "page": {
-            "$ref": "#/components/schemas/v1PaginationResponse"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/authzen.access.v1.PaginationResponse"
+              }
+            ],
+            "readOnly": true
           },
           "results": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/v1Subject"
-            }
+              "$ref": "#/components/schemas/authzen.access.v1.Subject"
+            },
+            "readOnly": true
           }
-        },
-        "title": "https://openid.github.io/authzen/#name-the-subject-search-api-resp"
-      }
-    },
-    "securitySchemes": {
-      "AuthorizationHeader": {
-        "type": "apiKey",
-        "name": "authorization",
-        "in": "header"
+        }
+      },
+      "google.rpc.Status": {
+        "type": "object",
+        "description": "The Status type defines a logical error model suitable for different programming environments.",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The status code, which should be an enum value of google.rpc.Code."
+          },
+          "details": {
+            "type": "array",
+            "description": "A list of messages that carry the error details.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "A developer-facing error message."
+          }
+        }
       }
     }
   },
-  "security": [
-    {
-      "AuthorizationHeader": []
-    }
-  ],
   "tags": [
+    {
+      "name": "authzen"
+    },
+    {
+      "name": "decision"
+    },
+    {
+      "name": "decisions"
+    },
+    {
+      "name": "search"
+    },
+    {
+      "name": "subject"
+    },
+    {
+      "name": "action"
+    },
+    {
+      "name": "resource"
+    },
     {
       "name": "Access"
     }
